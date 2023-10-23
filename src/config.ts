@@ -1,6 +1,6 @@
 const Config = {
 	mongodb: {
-		url: process.env.MONGODB_URL || 'mongodb://127.0.0.1:27017/ERP',
+		url: process.env.MONGODB_URL || 'mongodb://127.0.0.1:27017/ERP-TEST',
 	},
 	server: {
 		port: process.env.PORT || 8000,

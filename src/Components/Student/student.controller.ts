@@ -34,7 +34,6 @@ class studentController {
 
 			// console.log(student);
 			await student.save();
-
 			res.status(201).send({
 				success: true,
 				data: {
@@ -188,7 +187,7 @@ class studentController {
 			const student = await findStudentById(id);
 			// console.log(student)
 			if (!student) {
-				res.status(404).send({
+				return res.status(404).send({
 					success: false,
 					error: { statusCode: 404, message: 'student not found' },
 				});

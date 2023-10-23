@@ -1,0 +1,625 @@
+{
+	"info": {
+		"_postman_id": "137b9463-8a76-438e-abd3-dd3188f81f61",
+		"name": "ERP",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29672554"
+	},
+	"item": [
+		{
+			"name": "Student1",
+			"item": [
+				{
+					"name": "Logout Student",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/student/logout",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"student",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Student",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"mihir\",\n    \"emailId\": \"mihir@kevit.io\",\n    \"password\": \"mih123\",\n    \"phone_number\": 5888888888,\n    \"address\": \"rajkot\",\n    \"batchYear\":2030,\n    \"departmentId\":\"653621ec6ba432bd4a292428\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/student/signup",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"student",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Student",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(pm.response.code === 200){",
+									"    pm.environment.set(\"authToken\",pm.response.json().data.data)",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"emailId\":\"sunay@kevit.io\",\n    \"password\":\"sun123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/student/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"student",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Student",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"batchYear\":2020\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/student/update/65362302c8f8c7987d711798",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"student",
+								"update",
+								"65362302c8f8c7987d711798"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Students",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/student/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"student",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Student",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/student/delete/652fb5456a84b19773a1d998",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"student",
+								"delete",
+								"652fb5456a84b19773a1d998"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read Profile",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/student/me",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"student",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete All",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/student/del",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"student",
+								"del"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Absent Students By Specific Creteria",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"batch\":2070,\n    \"branch\":\"ME\",\n    \"semester\":1,\n    \"date\":\"24/10/2023\"\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/student/getAbsentStudents",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"student",
+								"getAbsentStudents"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Present Students MoreThan75",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"batch\":2070,\n    \"semester\":1,\n    \"branch\":\"IT\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/student/getMoreThen75PercentAttendanceStudent",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"student",
+								"getMoreThen75PercentAttendanceStudent"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getVacancySeats",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"batchYear\":2070,\n    \"branch\":\"IT\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/student/getVacancySeat",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"student",
+								"getVacancySeat"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Faculty",
+			"item": [
+				{
+					"name": "Create Faculty",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"yatri\",\n    \"emailId\":\"yatri@vvp.edu\",\n    \"password\":\"yat123\",\n    \"address\":\"rajkot\",\n    \"role\":\"Faculty\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/faculty/signup",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"faculty",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Faculty",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(pm.response.code === 200){",
+									"    pm.environment.set(\"authToken\",pm.response.json().data.data)",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"emailId\":\"darshan@vvp.edu\",\n    \"password\":\"dar123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/faculty/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"faculty",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Faculty",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"address\":\"jamnagar\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/faculty/update/652fcbb2205390a25ed8f52c",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"faculty",
+								"update",
+								"652fcbb2205390a25ed8f52c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Faculty",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/faculty/delete/652fb5a86a84b19773a1d99d",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"faculty",
+								"delete",
+								"652fb5a86a84b19773a1d99d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout Faculty",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/faculty/logout",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"faculty",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read Profile",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/faculty/me",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"faculty",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Faculties",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/faculty/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"faculty",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Departmnet",
+			"item": [
+				{
+					"name": "Create Department",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"Mechanical Engineering\",\n    \"totalSeat\":120,\n    \"initial\":\"ME\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/department/add",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"department",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Departments",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/department/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"department",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Department",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"totalSeat\":5000000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/department/update/65311418b7c85e7c9fbdd56b",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"department",
+								"update",
+								"65311418b7c85e7c9fbdd56b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Department",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/department/delete/653212ac3237f6520ec4613a",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"department",
+								"delete",
+								"653212ac3237f6520ec4613a"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Attendance",
+			"item": [
+				{
+					"name": "Fill Attendance",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    [\n        {\n        \"studentId\":\"65362560c8f8c7987d7117f5\",\n        \"date\":\"24/10/2023\",\n        \"present\":\"false\"\n    }\n    ]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/attendance/add",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"attendance",
+								"add"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{authToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

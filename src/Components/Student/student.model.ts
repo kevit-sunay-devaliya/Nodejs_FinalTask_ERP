@@ -32,7 +32,7 @@ const studentSchema = new Schema(
 		},
 		phone_number: {
 			type: Schema.Types.Number,
-			// required: true,
+			required: true,
 			unique:true,
 			minlength:10
 		},
@@ -82,6 +82,7 @@ export interface sampleStudent {
 	departmentId: string;
 	semester: number;
 	batchYear: number;
+	phone_number: number;
   }
 
   

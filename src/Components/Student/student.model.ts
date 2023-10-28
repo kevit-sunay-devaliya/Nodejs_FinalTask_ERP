@@ -17,7 +17,7 @@ const attandanceSchema = new mongoose.Schema({
 //     name: String,
 //     age: Number,
 // });
-
+//12
 // Student Schema For DataBase
 const studentSchema = new Schema(
 	{

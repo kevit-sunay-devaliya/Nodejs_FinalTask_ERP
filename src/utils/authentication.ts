@@ -10,6 +10,7 @@ export default async (req, res, next) => {
 		// const privateKey = fs.readFileSync(
 		// 	join(__dirname, '../../../keys/Private.key'),
 		// );
+		
 		//get id of user by token
 		const { id } = jwt.verify(token, privateKey);
 		//get user by id
@@ -27,7 +28,7 @@ export default async (req, res, next) => {
 
 		//checking for valid token
 		if (token === loginUser.authToken) {
-			req.loginUser = loginUser;
+			req['loginUser'] = loginUser;
 			next();
 		} else {
 			res.status(401).send({

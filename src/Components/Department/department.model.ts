@@ -26,11 +26,5 @@ const departmentSchema = new Schema(
 );
 
 
-export interface sampleDepartment {
-	name: string;
-	totalSeat: number;
-	initial: string;
-  }
-
 const Department = model('Department', departmentSchema);
 export default Department;

@@ -1,6 +1,6 @@
 import * as bcrypt from 'bcrypt';
 import mongoose from 'mongoose';
-
+import validator from 'validator';
 // import { findDepartmentById } from "Components/Department/department.DAL";
 // import Department from "Components/Department/department.model";
 
@@ -9,7 +9,7 @@ const { Schema, model } = mongoose;
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const attandanceSchema = new mongoose.Schema({
     studentId: String,
-	date:String,
+	  date:String,
     present: String,
 });
 
@@ -24,12 +24,20 @@ const studentSchema = new Schema(
 		name: {
 			type: Schema.Types.String,
 			required: true,
+			trim:true
 		},
 		emailId: {
 			type: Schema.Types.String,
 			required: true,
-			unique:true
-		},
+			unique:true,
+			validate(value) {
+				if (!validator.isEmail(value)) {
+				  throw new Error('Email is Invalid!');
+				}
+			  },
+			  trim: true,
+			  lowercase: true,
+			},
 		phone_number: {
 			type: Schema.Types.Number,
 			required: true,
@@ -74,18 +82,10 @@ const studentSchema = new Schema(
 );
 
 
-export interface sampleStudent {
-	name: string;
-	emailId: string;
-	password: string;
-	address: string;
-	departmentId: string;
-	semester: number;
-	batchYear: number;
-	phone_number: number;
-  }
 
-  
+
+
+//For Uniqueness checking
 studentSchema.index({ emailId: 1, departmentId: 1 }, { unique: true });
 
 //encrypt password

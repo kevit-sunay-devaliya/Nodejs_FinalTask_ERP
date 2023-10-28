@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-// import * as fs from 'fs';
-// import { join } from 'path';
 import * as bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 
@@ -18,21 +15,18 @@ import {
 	getVacancySeat,
 } from './student.DAL';
 
-import { sampleStudent } from './student.model';
+import { sampleStudent } from './student.types';
 
 class studentController {
 	/**
 	 * Create Student
-	 * @param req => Express Request
-	 * @param res => Express Response
+	 * @param {Request}req => Express Request
+	 * @param {Response}res => Express Response
 	 */
 	async createStudent(req: Request, res: Response) {
 		try {
 			const studentObj: sampleStudent = req.body;
-			// console.log(studentObj);
 			const student = await createStudent(studentObj);
-
-			// console.log(student);
 			await student.save();
 			res.status(201).send({
 				success: true,
@@ -55,8 +49,8 @@ class studentController {
 
 	/**
 	 * Student Login
-	 * @param req => Express Request
-	 * @param res => Express Response
+	 * @param {Request}req => Express Request
+	 * @param {Response}res => Express Response
 	 */
 	async loginStudent(req: Request, res: Response) {
 		try {
@@ -122,11 +116,11 @@ class studentController {
 	/**
 	 * Student LogOut
 	 * @param req => Express Request
-	 * @param res => Express Response
+	 * @param {Response}res => Express Response
 	 */
-	async logOutStudent(req, res: Response) {
+	async logOutStudent(req:Request, res: Response) {
 		try {
-			const id = req.loginUser.id;
+			const id = req['loginUser'].id;
 			const student = await findStudentById(id);
 			if (!student) {
 				res.status(404).send({
@@ -154,8 +148,8 @@ class studentController {
 
 	/**
 	 * List Students
-	 * @param req => Express Request
-	 * @param res => Express Response
+	 * @param {Request}req => Express Request
+	 * @param {Response}res => Express Response
 	 */
 	async getStudents(req: Request, res: Response) {
 		try {
@@ -177,15 +171,13 @@ class studentController {
 
 	/**
 	 * Update Student By StudentId
-	 * @param req => Express Request
-	 * @param res => Express Response
+	 * @param {Request}req => Express Request
+	 * @param {Response}res => Express Response
 	 */
 	async updateStudent(req: Request, res: Response) {
 		try {
 			const id = req.params.id;
-			// console.log(id)
 			const student = await findStudentById(id);
-			// console.log(student)
 			if (!student) {
 				return res.status(404).send({
 					success: false,
@@ -195,7 +187,6 @@ class studentController {
 
 			for (const field in req.body) {
 				student[field] = req.body[field];
-				// console.log(student)
 			}
 			await student.save();
 
@@ -220,8 +211,8 @@ class studentController {
 
 	/**
 	 * Delete Student By StudentId
-	 * @param req => Express Request
-	 * @param res => Express Response
+	 * @param {Request}req => Express Request
+	 * @param {Response}res => Express Response
 	 */
 	async deleteStudent(req: Request, res: Response) {
 		try {
@@ -256,8 +247,8 @@ class studentController {
 
 	/**
 	 * Delete All Students
-	 * @param req => Express Request
-	 * @param res => Express Response
+	 * @param {Request}req => Express Request
+	 * @param {Response}res => Express Response
 	 */
 
 	async deleteAllStudents(req: Request, res: Response) {
@@ -280,11 +271,11 @@ class studentController {
 	/**
 	 * Student Profile
 	 * @param req => Express Request
-	 * @param res => Express Response
+	 * @param {Response}res => Express Response
 	 */
-	async getProfile(req, res: Response) {
+	async getProfile(req:Request, res: Response) {
 		try {
-			const student = await findStudentById(req.loginUser._id);
+			const student = await findStudentById(req['loginUser']._id);
 			if (!student) {
 				res.status(404).send({
 					success: false,
@@ -308,8 +299,8 @@ class studentController {
 
 	/**
 	 * Get Absent Student List
-	 * @param req => Express Request
-	 * @param res => Express Response
+	 * @param {Request}req => Express Request
+	 * @param {Response}res => Express Response
 	 */
 	async getAbsentStudentBatchYearSemesterDateWise(
 		req: Request,
@@ -336,8 +327,8 @@ class studentController {
 
 	/**
 	 * Get Students whose Attendance is more then 75%
-	 * @param req => Express Request
-	 * @param res => Express Response
+	 * @param {Request}req => Express Request
+	 * @param {Response}res => Express Response
 	 */
 	async getMoreThen75PercentStudent(req: Request, res: Response) {
 		try {
@@ -359,8 +350,8 @@ class studentController {
 
 	/**
 	 * Get Department and Year wise vacancy
-	 * @param req => Express Request
-	 * @param res => Express Response
+	 * @param {Request}req => Express Request
+	 * @param {Response}res => Express Response
 	 */
 	async getVacancySeat(req: Request, res: Response) {
 		try {

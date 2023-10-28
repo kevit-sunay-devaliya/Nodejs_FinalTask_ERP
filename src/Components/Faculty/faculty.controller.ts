@@ -13,7 +13,7 @@ import {
 } from './faculty.DAL';
 
 
-import { sampleFaculty } from './faculty.model';
+import { sampleFaculty } from './faculty.types';
 
 class facultyController {
 
@@ -117,12 +117,12 @@ class facultyController {
 
 	/**
    * Faculty LogOut
-   * @param {Request} req => Express Request
+   * @param req => Express Request
    * @param {Response} res => Express Response
    */
-	async logOutFaculty(req, res:Response) {
+	async logOutFaculty(req:Request, res:Response) {
 		try {
-			const id = req.loginUser.id;
+			const id = req['loginUser'].id;
 			const faculty = await findFacultyById(id);
 			if (!faculty) {
 				res.status(404).send({
@@ -235,7 +235,7 @@ class facultyController {
 				data: {
 					statusCode: 200,
 					data: faculty,
-					message: 'faculty Deleted Sucessfully',
+					message: 'faculty Deleted Successfully',
 				},
 			});
 		} catch (error) {
@@ -251,12 +251,12 @@ class facultyController {
 
 /**
    * Faculty Profile
-   * @param {Request} req => Express Request
+   * @param req => Express Request
    * @param {Response} res => Express Response
    */
-	async getProfile(req, res:Response) {
+	async getProfile(req:Request, res:Response) {
 		try {
-			const faculty = await findFacultyById(req.loginUser._id);
+			const faculty = await findFacultyById(req['loginUser']._id);
 			if (!faculty) {
 				res.status(404).send({
 					success: false,

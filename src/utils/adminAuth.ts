@@ -9,7 +9,7 @@ export default async (req, res, next) => {
 		}
 	} catch (e) {
 		res.status(401).send({
-			error: 'Sorry! Only Admin Have This Rights...',
+			error: e,
 		});
 	}
 };

@@ -7,14 +7,13 @@ import {
 
 /**
  * Fill Students Attendance
- * @param req => Express Request
- * @param res => Express Response
+ * @param {Request} req => Express Request
+ * @param {Response} res => Express Response
  */
 class studentController {
     async fillAttendance(req:Request, res:Response) {
         try {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const response = fillAttendance(req.body);
+            fillAttendance(req.body);
             res.status(200).send({ 'success': true, 'data': { 'statusCode': 200, 'message': 'Attendance Filled Successfully' } });
         }
         catch (error) {

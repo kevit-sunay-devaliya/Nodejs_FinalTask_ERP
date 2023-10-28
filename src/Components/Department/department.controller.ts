@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Request , Response } from 'express';
-import mongoose, { ObjectId } from 'mongoose';
 
 import {
 	createDepartment,
@@ -8,10 +7,10 @@ import {
 	findDepartmentById,
 } from './department.DAL';
 
-import { sampleDepartment } from './department.model';
+import { sampleDepartment } from './department.types';
 
 class departmentController {
-	  /**
+	/**
    * Creates A New Department
    * @param {Request} req => Express Request
    * @param {Response} res => Express Response
@@ -68,10 +67,10 @@ class departmentController {
 
 	/**
 	 * Updates Department By DepartmentId
-	 * @param {Request} req => Express Request
+	 * @param req => Express Request
 	 * @param {Response} res => Express Response
 	 */
-	async updateDepartment(req, res:Response) {
+	async updateDepartment(req:Request, res:Response) {
 		try {
 			const id = req.params.id;
 			const department = await findDepartmentById(id);
@@ -100,10 +99,10 @@ class departmentController {
 
 	/**
 	 * Delete Department By DepartmentId
-	 * @param {Request} req => Express Request
+	 * @param req => Express Request
 	 * @param {Response} res => Express Response
 	 */
-	async deleteDepartment(req, res:Response) {
+	async deleteDepartment(req:Request, res:Response) {
 		try {
 			const id = req.params.id;
 			const department = await findDepartmentById(id);

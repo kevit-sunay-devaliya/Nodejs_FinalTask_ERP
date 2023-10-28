@@ -1,5 +1,6 @@
 import * as bcrypt from 'bcrypt';
 import mongoose from 'mongoose';
+import validator from 'validator';
 
 
 const { Schema, model } = mongoose;
@@ -10,11 +11,20 @@ const facultySchema = new Schema(
 		name: {
 			type: Schema.Types.String,
 			required: true,
+			trim:true
 		},
 		emailId: {
 			type: Schema.Types.String,
 			required: true,
-		},
+			unique:true,
+			validate(value) {
+				if (!validator.isEmail(value)) {
+				  throw new Error('Email is Invalid!');
+				}
+			  },
+			  trim: true,
+			  lowercase: true,
+			},
 		password: {
 			type: Schema.Types.String,
 			require: true,
@@ -43,14 +53,7 @@ const facultySchema = new Schema(
 	},
 );
 
-export interface sampleFaculty {
-	name: string;
-	emailId: string;
-	password: string;
-	address: string;
-	role: string;
-  }
-  
+
 
 //encrypt password
 facultySchema.pre('save', async function (next) {

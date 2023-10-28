@@ -6,6 +6,8 @@ import studentRoutes from './Components/Student/student.routes';
 
 import IndexRoute from './index';
 
+
+//Routes
 export default class ApplicationConfig {
 	public static registerRoute(app: Application) {
 		app.use('/', IndexRoute);

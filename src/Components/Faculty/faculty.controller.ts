@@ -1,7 +1,7 @@
 // import * as fs from 'fs';
 // import { join } from 'path';
 import * as bcrypt from 'bcrypt';
-import { Request , Response } from 'express';
+import { Request, Response } from 'express';
 import * as jwt from 'jsonwebtoken';
 import Config from '../../config';
 
@@ -12,17 +12,15 @@ import {
 	findFaculties,
 } from './faculty.DAL';
 
-
 import { sampleFaculty } from './faculty.types';
 
 class facultyController {
-
 	/**
-   * Creates A New Faculty
-   * @param {Request} req => Express Request
-   * @param {Response} res => Express Response
-   */
-	async createFaculty(req:Request, res:Response) {
+	 * Creates A New Faculty
+	 * @param {Request} req => Express Request
+	 * @param {Response} res => Express Response
+	 */
+	async createFaculty(req: Request, res: Response) {
 		try {
 			const facultyObj: sampleFaculty = req.body;
 			const faculty = await createFaculty(facultyObj);
@@ -46,17 +44,17 @@ class facultyController {
 		}
 	}
 
-	  /**
-   * Faculty Login
-   * @param {Request} req => Express Request
-   * @param {Response} res => Express Response
-   */
+	/**
+	 * Faculty Login
+	 * @param {Request} req => Express Request
+	 * @param {Response} res => Express Response
+	 */
 
-	async loginFaculty(req:Request, res:Response) {
+	async loginFaculty(req: Request, res: Response) {
 		try {
 			const { emailId, password } = req.body;
 			if (!emailId || !password) {
-				res.status(404).send({
+				return res.status(404).send({
 					success: false,
 					error: {
 						statusCode: 404,
@@ -114,18 +112,17 @@ class facultyController {
 		}
 	}
 
-
 	/**
-   * Faculty LogOut
-   * @param req => Express Request
-   * @param {Response} res => Express Response
-   */
-	async logOutFaculty(req:Request, res:Response) {
+	 * Faculty LogOut
+	 * @param req => Express Request
+	 * @param {Response} res => Express Response
+	 */
+	async logOutFaculty(req: Request, res: Response) {
 		try {
 			const id = req['loginUser'].id;
 			const faculty = await findFacultyById(id);
 			if (!faculty) {
-				res.status(404).send({
+				return res.status(404).send({
 					success: false,
 					error: { statusCode: 404, message: 'faculty not found' },
 				});
@@ -148,13 +145,12 @@ class facultyController {
 		}
 	}
 
-
-	  /**
-   * List Faculties
-   * @param {Request} req => Express Request
-   * @param {Response} res => Express Response
-   */
-	async getFaculties(req:Request, res:Response) {
+	/**
+	 * List Faculties
+	 * @param {Request} req => Express Request
+	 * @param {Response} res => Express Response
+	 */
+	async getFaculties(req: Request, res: Response) {
 		try {
 			const faculties = await findFaculties();
 			res.status(200).send({
@@ -172,19 +168,18 @@ class facultyController {
 		}
 	}
 
-
-	 /**
-   * Updates Faculty By FacultyId
-   * @param {Request} req => Express Request
-   * @param {Response} res => Express Response
-   */
-	async updateFaculty(req:Request, res:Response) {
+	/**
+	 * Updates Faculty By FacultyId
+	 * @param {Request} req => Express Request
+	 * @param {Response} res => Express Response
+	 */
+	async updateFaculty(req: Request, res: Response) {
 		try {
 			const id = req.params.id;
 
 			const faculty = await findFacultyById(id);
 			if (!faculty) {
-				res.status(404).send({
+				return res.status(404).send({
 					success: false,
 					error: { statusCode: 404, message: 'faculty not found' },
 				});
@@ -213,18 +208,17 @@ class facultyController {
 		}
 	}
 
-
-	  /**
-   * Deletes Faculty By FacultyId
-   * @param {Request} req => Express Request
-   * @param {Response} res => Express Response
-   */
-	async deleteFaculty(req:Request, res:Response) {
+	/**
+	 * Deletes Faculty By FacultyId
+	 * @param {Request} req => Express Request
+	 * @param {Response} res => Express Response
+	 */
+	async deleteFaculty(req: Request, res: Response) {
 		try {
 			const id = req.params.id;
 			const faculty = await findFacultyById(id);
 			if (!faculty) {
-				res.status(404).send({
+				return res.status(404).send({
 					success: false,
 					error: { statusCode: 404, message: 'faculty not found' },
 				});
@@ -249,20 +243,21 @@ class facultyController {
 		}
 	}
 
-/**
-   * Faculty Profile
-   * @param req => Express Request
-   * @param {Response} res => Express Response
-   */
-	async getProfile(req:Request, res:Response) {
+	/**
+	 * Faculty Profile
+	 * @param req => Express Request
+	 * @param {Response} res => Express Response
+	 */
+	async getProfile(req: Request, res: Response) {
 		try {
 			const faculty = await findFacultyById(req['loginUser']._id);
 			if (!faculty) {
-				res.status(404).send({
+				return res.status(404).send({
 					success: false,
 					error: { statusCode: 404, message: 'faculty not found' },
 				});
 			}
+
 			res.status(200).send({
 				success: true,
 				data: { statusCode: 200, data: faculty, message: 'Profile' },

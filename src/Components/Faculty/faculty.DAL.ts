@@ -46,7 +46,5 @@ export async function findFaculties() {
 export async function findFacultyById(id) {
 	try {
 		return await Faculty.findById(new mongoose.Types.ObjectId(id));
-	} catch (error) {
-		throw new Error(error);
-	}
+	} catch (error) {}
 }

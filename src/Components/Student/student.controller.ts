@@ -56,7 +56,7 @@ class studentController {
 		try {
 			const { emailId, password } = req.body;
 			if (!emailId || !password) {
-				res.status(404).send({
+				return res.status(404).send({
 					success: false,
 					error: {
 						statusCode: 404,
@@ -118,12 +118,12 @@ class studentController {
 	 * @param req => Express Request
 	 * @param {Response}res => Express Response
 	 */
-	async logOutStudent(req:Request, res: Response) {
+	async logOutStudent(req: Request, res: Response) {
 		try {
 			const id = req['loginUser'].id;
 			const student = await findStudentById(id);
 			if (!student) {
-				res.status(404).send({
+				return res.status(404).send({
 					success: false,
 					error: { statusCode: 404, message: 'student not found' },
 				});
@@ -220,7 +220,7 @@ class studentController {
 			const student = await findStudentById(id);
 
 			if (!student) {
-				res.status(404).send({
+				return res.status(404).send({
 					success: false,
 					error: { statusCode: 404, message: 'student not found' },
 				});
@@ -273,11 +273,11 @@ class studentController {
 	 * @param req => Express Request
 	 * @param {Response}res => Express Response
 	 */
-	async getProfile(req:Request, res: Response) {
+	async getProfile(req: Request, res: Response) {
 		try {
 			const student = await findStudentById(req['loginUser']._id);
 			if (!student) {
-				res.status(404).send({
+				return res.status(404).send({
 					success: false,
 					error: { statusCode: 404, message: 'Student  not found' },
 				});

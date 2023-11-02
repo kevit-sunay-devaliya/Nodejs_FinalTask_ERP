@@ -8,7 +8,7 @@ import Department from './department.model';
  * @param departmentBody => Department Object to be created.
  * @returns => New Created Department
  */
-export async function createDepartment(departmentBody:object) {
+export async function createDepartment(departmentBody: object) {
 	try {
 		return await Department.create(departmentBody);
 	} catch (error) {

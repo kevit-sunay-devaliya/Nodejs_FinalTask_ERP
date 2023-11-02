@@ -6,7 +6,6 @@ import studentRoutes from './Components/Student/student.routes';
 
 import IndexRoute from './index';
 
-
 //Routes
 export default class ApplicationConfig {
 	public static registerRoute(app: Application) {
@@ -14,6 +13,6 @@ export default class ApplicationConfig {
 		app.use('/department', departmentRoutes);
 		app.use('/faculty', facultyRoutes);
 		app.use('/student', studentRoutes);
-		app.use('/attendance',attendanceRoutes);
+		app.use('/attendance', attendanceRoutes);
 	}
 }

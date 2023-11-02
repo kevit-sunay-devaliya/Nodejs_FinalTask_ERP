@@ -9,8 +9,8 @@
     "pretty": true,
     "sourceMap": true,
     "target": "es2021",
-    "rootDir": "./",
-    "outDir": "./lib",
+    "rootDir": "./src",
+    "outDir": "./xyz",
     "baseUrl": "./src",
     "removeComments": true,
     "forceConsistentCasingInFileNames":true,
@@ -19,6 +19,6 @@
     "node_modules"
   ],
   "include": [
-    "src/","jest.config.js","tests"
+    "src/"
   ]
 }

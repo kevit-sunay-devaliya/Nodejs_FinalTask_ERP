@@ -2,7 +2,6 @@ import * as bcrypt from 'bcrypt';
 import mongoose from 'mongoose';
 import validator from 'validator';
 
-
 const { Schema, model } = mongoose;
 
 // Faculty Schema For DataBase
@@ -11,20 +10,20 @@ const facultySchema = new Schema(
 		name: {
 			type: Schema.Types.String,
 			required: true,
-			trim:true
+			trim: true,
 		},
 		emailId: {
 			type: Schema.Types.String,
 			required: true,
-			unique:true,
+			unique: true,
 			validate(value) {
 				if (!validator.isEmail(value)) {
-				  throw new Error('Email is Invalid!');
+					throw new Error('Email is Invalid!');
 				}
-			  },
-			  trim: true,
-			  lowercase: true,
 			},
+			trim: true,
+			lowercase: true,
+		},
 		password: {
 			type: Schema.Types.String,
 			require: true,
@@ -33,11 +32,6 @@ const facultySchema = new Schema(
 			type: Schema.Types.String,
 			required: true,
 		},
-		// departmentId: {
-		// 	type: Schema.Types.ObjectId,
-		// 	required: true,
-		// 	ref: 'Department',
-		// },
 		authToken: {
 			type: Schema.Types.String,
 			required: true,
@@ -52,8 +46,6 @@ const facultySchema = new Schema(
 		timestamps: true,
 	},
 );
-
-
 
 //encrypt password
 facultySchema.pre('save', async function (next) {

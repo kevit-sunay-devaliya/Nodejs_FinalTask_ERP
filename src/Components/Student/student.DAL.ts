@@ -46,9 +46,10 @@ export async function findStudents() {
  */
 export async function findStudentById(id: string) {
 	try {
-		return await Student.findById(new mongoose.Types.ObjectId(id));
+		// return await Student.findById(new mongoose.Types.ObjectId(id));
+		return await Student.findById(id);
 	} catch (error) {
-		throw new Error(error);
+		// throw new Error(error);
 	}
 }
 /**

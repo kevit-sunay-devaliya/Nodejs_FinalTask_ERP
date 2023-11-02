@@ -41,10 +41,10 @@ class studentRoutes {
 			this.studentController.getStudents,
 		);
 
-		//Update Student
+		// Update Student
 		this.router.patch(
 			'/update/:id?',
-			authentication,
+			// authentication,
 			this.studentController.updateStudent,
 		);
 

@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "start": "npm run build && node lib/app.js",
-    "start:dev": "npm run build && nodemon lib/app.js",
+    "start:dev": "npm run build && nodemon xyz/app.js",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",

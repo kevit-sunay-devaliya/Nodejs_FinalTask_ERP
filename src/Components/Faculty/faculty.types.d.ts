@@ -5,5 +5,4 @@ export interface sampleFaculty {
 	password: string;
 	address: string;
 	role: string;
-  }
-  
+}

@@ -58,7 +58,7 @@ class app {
 
 	//Mongo Setup
 	private mongoSetup(): void {
-		  // Configure MongoDB connection options
+		// Configure MongoDB connection options
 		const dbOptions = {
 			maxPoolSize: 5,
 			useNewUrlParser: true,

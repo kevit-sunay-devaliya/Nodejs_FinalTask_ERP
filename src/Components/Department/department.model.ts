@@ -8,7 +8,7 @@ const departmentSchema = new Schema(
 		name: {
 			type: Schema.Types.String,
 			required: true,
-			unique:true
+			unique: true,
 		},
 		totalSeat: {
 			type: Schema.Types.Number,
@@ -17,14 +17,13 @@ const departmentSchema = new Schema(
 		initial: {
 			type: Schema.Types.String,
 			required: true,
-			unique:true
+			unique: true,
 		},
 	},
 	{
 		timestamps: true,
 	},
 );
-
 
 const Department = model('Department', departmentSchema);
 export default Department;

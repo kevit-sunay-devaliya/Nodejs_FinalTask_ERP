@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Request , Response } from 'express';
+import { Request, Response } from 'express';
 
 import {
 	createDepartment,
@@ -11,13 +11,13 @@ import { sampleDepartment } from './department.types';
 
 class departmentController {
 	/**
-   * Creates A New Department
-   * @param {Request} req => Express Request
-   * @param {Response} res => Express Response
-   */
-	async createDepartment(req:Request, res:Response) {
+	 * Creates A New Department
+	 * @param {Request} req => Express Request
+	 * @param {Response} res => Express Response
+	 */
+	async createDepartment(req: Request, res: Response) {
 		try {
-			const departmentObj:sampleDepartment = req.body;
+			const departmentObj: sampleDepartment = req.body;
 			const department = await createDepartment(departmentObj);
 			res.status(200).send({
 				success: true,
@@ -38,12 +38,12 @@ class departmentController {
 		}
 	}
 
-	 /**
-   * List Departments
-   * @param {Request} req => Express Request
-   * @param {Response} res => Express Response
-   */
-	async getDepartments(req:Request, res:Response) {
+	/**
+	 * List Departments
+	 * @param {Request} req => Express Request
+	 * @param {Response} res => Express Response
+	 */
+	async getDepartments(req: Request, res: Response) {
 		try {
 			const departments = await findDepartments();
 			res.status(200).send({
@@ -70,12 +70,12 @@ class departmentController {
 	 * @param req => Express Request
 	 * @param {Response} res => Express Response
 	 */
-	async updateDepartment(req:Request, res:Response) {
+	async updateDepartment(req: Request, res: Response) {
 		try {
 			const id = req.params.id;
 			const department = await findDepartmentById(id);
 			if (!department) {
-				res.status(404).send({
+				return res.status(404).send({
 					success: false,
 					error: { statusCode: 404, message: 'Department not found' },
 				});
@@ -102,12 +102,12 @@ class departmentController {
 	 * @param req => Express Request
 	 * @param {Response} res => Express Response
 	 */
-	async deleteDepartment(req:Request, res:Response) {
+	async deleteDepartment(req: Request, res: Response) {
 		try {
 			const id = req.params.id;
 			const department = await findDepartmentById(id);
 			if (!department) {
-				res.status(404).send({
+				return res.status(404).send({
 					success: false,
 					error: { statusCode: 404, message: 'Department not found' },
 				});

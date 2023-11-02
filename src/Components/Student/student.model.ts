@@ -8,9 +8,9 @@ const { Schema, model } = mongoose;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const attandanceSchema = new mongoose.Schema({
-    studentId: String,
-	  date:String,
-    present: String,
+	studentId: String,
+	date: String,
+	present: String,
 });
 
 // const userSchema = new mongoose.Schema({
@@ -24,25 +24,25 @@ const studentSchema = new Schema(
 		name: {
 			type: Schema.Types.String,
 			required: true,
-			trim:true
+			trim: true,
 		},
 		emailId: {
 			type: Schema.Types.String,
 			required: true,
-			unique:true,
+			unique: true,
 			validate(value) {
 				if (!validator.isEmail(value)) {
-				  throw new Error('Email is Invalid!');
+					throw new Error('Email is Invalid!');
 				}
-			  },
-			  trim: true,
-			  lowercase: true,
 			},
+			trim: true,
+			lowercase: true,
+		},
 		phone_number: {
 			type: Schema.Types.Number,
 			required: true,
-			unique:true,
-			minlength:10
+			unique: true,
+			minlength: 10,
 		},
 		password: {
 			type: Schema.Types.String,
@@ -71,19 +71,17 @@ const studentSchema = new Schema(
 			type: Schema.Types.Number,
 			required: true,
 		},
-		attendance: [{
-		    type:mongoose.Schema.Types.Mixed,
-		    default:[]
-		}]
+		attendance: [
+			{
+				type: mongoose.Schema.Types.Mixed,
+				default: [],
+			},
+		],
 	},
 	{
 		timestamps: true,
 	},
 );
-
-
-
-
 
 //For Uniqueness checking
 studentSchema.index({ emailId: 1, departmentId: 1 }, { unique: true });

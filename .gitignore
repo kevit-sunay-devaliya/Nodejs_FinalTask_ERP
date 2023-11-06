@@ -1,1 +1,6 @@
 /xyz
+/coverage
+/Dump
+/node_modules
+.env
+.hintrc

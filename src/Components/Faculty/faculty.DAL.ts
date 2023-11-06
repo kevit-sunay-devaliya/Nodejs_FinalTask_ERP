@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import Faculty from './faculty.model';
+import { newError } from '../../utils/error';
 
 /**
  * Create New Faculty in DB
@@ -10,7 +11,7 @@ export async function createFaculty(facultyBody) {
 	try {
 		return await Faculty.create(facultyBody);
 	} catch (error) {
-		throw new Error(error);
+		throw newError(500, error);
 	}
 }
 
@@ -22,7 +23,7 @@ export async function findFacultyByEmailId(emailId) {
 	try {
 		return await Faculty.findOne({ emailId });
 	} catch (error) {
-		throw new Error(error);
+		throw newError(500, error);
 	}
 }
 
@@ -34,7 +35,7 @@ export async function findFaculties() {
 	try {
 		return await Faculty.find().lean();
 	} catch (error) {
-		throw new Error(error);
+		throw newError(500, error);
 	}
 }
 
@@ -46,5 +47,7 @@ export async function findFaculties() {
 export async function findFacultyById(id) {
 	try {
 		return await Faculty.findById(new mongoose.Types.ObjectId(id));
-	} catch (error) {}
+	} catch (error) {
+		throw newError(500, error);
+	}
 }

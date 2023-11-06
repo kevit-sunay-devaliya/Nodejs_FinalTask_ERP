@@ -1,6 +1,6 @@
 import * as bcrypt from 'bcrypt';
-import { Request, Response } from 'express';
-
+import { NextFunction, Request, Response } from 'express';
+import { newError } from '../../utils/error';
 import * as jwt from 'jsonwebtoken';
 import Config from '../../config';
 
@@ -22,8 +22,9 @@ class studentController {
 	 * Create Student
 	 * @param {Request}req => Express Request
 	 * @param {Response}res => Express Response
+	 * @param {NextFunction} next => Express next function
 	 */
-	async createStudent(req: Request, res: Response) {
+	async createStudent(req: Request, res: Response, next: NextFunction) {
 		try {
 			const studentObj: sampleStudent = req.body;
 			const student = await createStudent(studentObj);
@@ -37,13 +38,7 @@ class studentController {
 				},
 			});
 		} catch (error) {
-			res.status(500).send({
-				success: false,
-				error: {
-					statusCode: 500,
-					message: 'Error while creating new Student',
-				},
-			});
+			next(error);
 		}
 	}
 
@@ -51,18 +46,13 @@ class studentController {
 	 * Student Login
 	 * @param {Request}req => Express Request
 	 * @param {Response}res => Express Response
+	 * @param {NextFunction} next => Express next function
 	 */
-	async loginStudent(req: Request, res: Response) {
+	async loginStudent(req: Request, res: Response, next: NextFunction) {
 		try {
 			const { emailId, password } = req.body;
 			if (!emailId || !password) {
-				return res.status(404).send({
-					success: false,
-					error: {
-						statusCode: 404,
-						message: 'Please Provide an emailId and password',
-					},
-				});
+				throw newError(404, 'Please Provide an emailId and password');
 			}
 			const student = await findStudentByEmailId(emailId);
 			if (student) {
@@ -88,28 +78,13 @@ class studentController {
 						},
 					});
 				} else {
-					res.status(401).send({
-						success: false,
-						error: {
-							statusCode: 401,
-							message: 'Invalid EmailId or Password',
-						},
-					});
+					throw newError(401, 'Invalid EmailId or Password');
 				}
 			} else {
-				res.status(401).send({
-					success: false,
-					error: {
-						statusCode: 401,
-						message: 'Invalid EmailId or Password',
-					},
-				});
+				throw newError(404, 'Student not found!');
 			}
 		} catch (error) {
-			res.status(500).send({
-				success: false,
-				error: { statusCode: 500, message: 'Error while Login' },
-			});
+			next(error);
 		}
 	}
 
@@ -117,16 +92,14 @@ class studentController {
 	 * Student LogOut
 	 * @param req => Express Request
 	 * @param {Response}res => Express Response
+	 * @param {NextFunction} next => Express next function
 	 */
-	async logOutStudent(req: Request, res: Response) {
+	async logOutStudent(req: Request, res: Response, next: NextFunction) {
 		try {
 			const id = req['loginUser'].id;
 			const student = await findStudentById(id);
 			if (!student) {
-				return res.status(404).send({
-					success: false,
-					error: { statusCode: 404, message: 'student not found' },
-				});
+				throw newError(404, 'Student not found');
 			}
 			student.authToken = ' ';
 			await student.save();
@@ -139,10 +112,7 @@ class studentController {
 				},
 			});
 		} catch (error) {
-			res.status(500).send({
-				success: false,
-				error: { statusCode: 500, message: 'Error while LogOut' },
-			});
+			next(error);
 		}
 	}
 
@@ -150,8 +120,9 @@ class studentController {
 	 * List Students
 	 * @param {Request}req => Express Request
 	 * @param {Response}res => Express Response
+	 * @param {NextFunction} next => Express next function
 	 */
-	async getStudents(req: Request, res: Response) {
+	async getStudents(req: Request, res: Response, next: NextFunction) {
 		try {
 			const students = await findStudents();
 			res.status(200).send({
@@ -159,13 +130,7 @@ class studentController {
 				data: { statusCode: 200, data: students, message: 'Success' },
 			});
 		} catch (error) {
-			res.status(500).send({
-				success: false,
-				error: {
-					statusCode: 500,
-					message: 'Error while Loading Users',
-				},
-			});
+			next(error);
 		}
 	}
 
@@ -173,16 +138,14 @@ class studentController {
 	 * Update Student By StudentId
 	 * @param {Request}req => Express Request
 	 * @param {Response}res => Express Response
+	 * @param {NextFunction} next => Express next function
 	 */
-	async updateStudent(req: Request, res: Response) {
+	async updateStudent(req: Request, res: Response, next: NextFunction) {
 		try {
 			const id = req.params.id;
 			const student = await findStudentById(id);
 			if (!student) {
-				return res.status(404).send({
-					success: false,
-					error: { statusCode: 404, message: 'student not found' },
-				});
+				throw newError(404, 'Student not found');
 			}
 
 			for (const field in req.body) {
@@ -199,13 +162,7 @@ class studentController {
 				},
 			});
 		} catch (error) {
-			res.status(500).send({
-				success: false,
-				error: {
-					statusCode: 500,
-					message: 'Error while updating student',
-				},
-			});
+			next(error);
 		}
 	}
 
@@ -213,17 +170,15 @@ class studentController {
 	 * Delete Student By StudentId
 	 * @param {Request}req => Express Request
 	 * @param {Response}res => Express Response
+	 * @param {NextFunction} next => Express next function
 	 */
-	async deleteStudent(req: Request, res: Response) {
+	async deleteStudent(req: Request, res: Response, next: NextFunction) {
 		try {
 			const id = req.params.id;
 			const student = await findStudentById(id);
 
 			if (!student) {
-				return res.status(404).send({
-					success: false,
-					error: { statusCode: 404, message: 'student not found' },
-				});
+				throw newError(404, 'Student not found');
 			}
 			await student.deleteOne();
 			res.status(200).send({
@@ -235,13 +190,7 @@ class studentController {
 				},
 			});
 		} catch (error) {
-			res.status(500).send({
-				success: false,
-				error: {
-					statusCode: 500,
-					message: 'Error while deleting student',
-				},
-			});
+			next(error);
 		}
 	}
 
@@ -249,51 +198,38 @@ class studentController {
 	 * Delete All Students
 	 * @param {Request}req => Express Request
 	 * @param {Response}res => Express Response
+	 * @param {NextFunction} next => Express next function
 	 */
 
-	async deleteAllStudents(req: Request, res: Response) {
+	async deleteAllStudents(req: Request, res: Response, next: NextFunction) {
 		try {
 			await deleteAll();
 			res.status(200).send({
 				message: 'All Students Deleted successfully!',
 			});
 		} catch (error) {
-			res.status(500).send({
-				success: false,
-				error: {
-					statusCode: 500,
-					message: 'Error while deleting student',
-				},
-			});
+			next(error);
 		}
 	}
 
 	/**
 	 * Student Profile
-	 * @param req => Express Request
+	 * @param {Request}req => Express Request
 	 * @param {Response}res => Express Response
+	 * @param {NextFunction} next => Express next function
 	 */
-	async getProfile(req: Request, res: Response) {
+	async getProfile(req: Request, res: Response, next: NextFunction) {
 		try {
 			const student = await findStudentById(req['loginUser']._id);
 			if (!student) {
-				return res.status(404).send({
-					success: false,
-					error: { statusCode: 404, message: 'Student  not found' },
-				});
+				throw newError(404, 'Student not found');
 			}
 			res.status(200).send({
 				success: true,
 				data: { statusCode: 200, data: student, message: 'Profile' },
 			});
-		} catch {
-			res.status(500).send({
-				success: false,
-				error: {
-					statusCode: 500,
-					message: 'Error while Loading your profile',
-				},
-			});
+		} catch (error) {
+			next(error);
 		}
 	}
 
@@ -301,10 +237,12 @@ class studentController {
 	 * Get Absent Student List
 	 * @param {Request}req => Express Request
 	 * @param {Response}res => Express Response
+	 * @param {NextFunction} next => Express next function
 	 */
 	async getAbsentStudentBatchYearSemesterDateWise(
 		req: Request,
 		res: Response,
+		next: NextFunction,
 	) {
 		try {
 			const data = await getAbsentStudentBatchYearSemesterDateWise(
@@ -314,14 +252,8 @@ class studentController {
 				success: true,
 				data: { statusCode: 200, data: data, message: 'Success' },
 			});
-		} catch {
-			res.status(500).send({
-				success: false,
-				data: {
-					statusCode: 500,
-					message: 'Something went wrong while retrieving data',
-				},
-			});
+		} catch (error) {
+			next(error);
 		}
 	}
 
@@ -329,22 +261,21 @@ class studentController {
 	 * Get Students whose Attendance is more then 75%
 	 * @param {Request}req => Express Request
 	 * @param {Response}res => Express Response
+	 * @param {NextFunction} next => Express next function
 	 */
-	async getMoreThen75PercentStudent(req: Request, res: Response) {
+	async getMoreThen75PercentStudent(
+		req: Request,
+		res: Response,
+		next: NextFunction,
+	) {
 		try {
 			const data = await getMoreThen75PercentStudent(req.body);
 			res.status(200).send({
 				success: true,
 				data: { statusCode: 200, data: data, message: 'Success' },
 			});
-		} catch {
-			res.status(500).send({
-				success: false,
-				data: {
-					statusCode: 500,
-					message: 'Something went wrong white retrieving data',
-				},
-			});
+		} catch (error) {
+			next(error);
 		}
 	}
 
@@ -352,22 +283,17 @@ class studentController {
 	 * Get Department and Year wise vacancy
 	 * @param {Request}req => Express Request
 	 * @param {Response}res => Express Response
+	 * @param {NextFunction} next => Express next function
 	 */
-	async getVacancySeat(req: Request, res: Response) {
+	async getVacancySeat(req: Request, res: Response, next: NextFunction) {
 		try {
 			const data = await getVacancySeat(req.body);
 			res.status(200).send({
 				success: true,
 				data: { statusCode: 200, data: data, message: 'Success' },
 			});
-		} catch {
-			res.status(500).send({
-				success: false,
-				data: {
-					statusCode: 500,
-					message: 'Something went wrong white retrieving data',
-				},
-			});
+		} catch (error) {
+			next(error);
 		}
 	}
 }

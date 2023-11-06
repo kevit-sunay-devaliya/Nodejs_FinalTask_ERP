@@ -1,8 +1,9 @@
 // import * as fs from 'fs';
 // import { join } from 'path';
 import * as bcrypt from 'bcrypt';
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import * as jwt from 'jsonwebtoken';
+import { newError } from '../../utils/error';
 import Config from '../../config';
 
 import {
@@ -19,8 +20,9 @@ class facultyController {
 	 * Creates A New Faculty
 	 * @param {Request} req => Express Request
 	 * @param {Response} res => Express Response
+	 * @param {NextFunction} next => Express next function
 	 */
-	async createFaculty(req: Request, res: Response) {
+	async createFaculty(req: Request, res: Response, next: NextFunction) {
 		try {
 			const facultyObj: sampleFaculty = req.body;
 			const faculty = await createFaculty(facultyObj);
@@ -34,13 +36,7 @@ class facultyController {
 				},
 			});
 		} catch (error) {
-			res.status(500).send({
-				success: false,
-				error: {
-					statusCode: 500,
-					message: 'Error while creating new user',
-				},
-			});
+			next(error);
 		}
 	}
 
@@ -48,19 +44,14 @@ class facultyController {
 	 * Faculty Login
 	 * @param {Request} req => Express Request
 	 * @param {Response} res => Express Response
+	 * @param {NextFunction} next => Express next function
 	 */
 
-	async loginFaculty(req: Request, res: Response) {
+	async loginFaculty(req: Request, res: Response, next: NextFunction) {
 		try {
 			const { emailId, password } = req.body;
 			if (!emailId || !password) {
-				return res.status(404).send({
-					success: false,
-					error: {
-						statusCode: 404,
-						message: 'Please Provide an emailId and password',
-					},
-				});
+				throw newError(404, 'Please Provide an emailId and password');
 			}
 
 			const faculty = await findFacultyByEmailId(emailId);
@@ -87,45 +78,28 @@ class facultyController {
 						},
 					});
 				} else {
-					res.status(401).send({
-						success: false,
-						error: {
-							statusCode: 401,
-							message: 'Invalid EmailId or Password',
-						},
-					});
+					throw newError(401, 'Invalid EmailId or Password');
 				}
 			} else {
-				res.status(401).send({
-					success: false,
-					error: {
-						statusCode: 401,
-						message: 'Invalid EmailId or Password',
-					},
-				});
+				throw newError(404, 'Faculty not found!');
 			}
 		} catch (error) {
-			res.status(500).send({
-				success: false,
-				error: { statusCode: 500, message: 'Error while Login' },
-			});
+			next(error);
 		}
 	}
 
 	/**
 	 * Faculty LogOut
-	 * @param req => Express Request
+	 * @param {Request}req => Express Request
 	 * @param {Response} res => Express Response
+	 * @param {NextFunction} next => Express next function
 	 */
-	async logOutFaculty(req: Request, res: Response) {
+	async logOutFaculty(req: Request, res: Response, next: NextFunction) {
 		try {
 			const id = req['loginUser'].id;
 			const faculty = await findFacultyById(id);
 			if (!faculty) {
-				return res.status(404).send({
-					success: false,
-					error: { statusCode: 404, message: 'faculty not found' },
-				});
+				throw newError(404, 'Faculty not found!');
 			}
 			faculty.authToken = ' ';
 			await faculty.save();
@@ -138,10 +112,7 @@ class facultyController {
 				},
 			});
 		} catch (error) {
-			res.status(500).send({
-				success: false,
-				error: { statusCode: 500, message: 'Error while Login' },
-			});
+			next(error);
 		}
 	}
 
@@ -149,8 +120,9 @@ class facultyController {
 	 * List Faculties
 	 * @param {Request} req => Express Request
 	 * @param {Response} res => Express Response
+	 * @param {NextFunction} next => Express next function
 	 */
-	async getFaculties(req: Request, res: Response) {
+	async getFaculties(req: Request, res: Response, next: NextFunction) {
 		try {
 			const faculties = await findFaculties();
 			res.status(200).send({
@@ -158,13 +130,7 @@ class facultyController {
 				data: { statusCode: 200, data: faculties, message: 'Success' },
 			});
 		} catch (error) {
-			res.status(500).send({
-				success: false,
-				error: {
-					statusCode: 500,
-					message: 'Error while Loading Users',
-				},
-			});
+			next(error);
 		}
 	}
 
@@ -172,17 +138,15 @@ class facultyController {
 	 * Updates Faculty By FacultyId
 	 * @param {Request} req => Express Request
 	 * @param {Response} res => Express Response
+	 * @param {NextFunction} next => Express next function
 	 */
-	async updateFaculty(req: Request, res: Response) {
+	async updateFaculty(req: Request, res: Response, next: NextFunction) {
 		try {
 			const id = req.params.id;
 
 			const faculty = await findFacultyById(id);
 			if (!faculty) {
-				return res.status(404).send({
-					success: false,
-					error: { statusCode: 404, message: 'faculty not found' },
-				});
+				throw newError(404, 'Faculty not found!');
 			}
 
 			for (const field in req.body) {
@@ -198,13 +162,7 @@ class facultyController {
 				},
 			});
 		} catch (error) {
-			res.status(500).send({
-				success: false,
-				error: {
-					statusCode: 500,
-					message: 'Error while updating faculty',
-				},
-			});
+			next(error);
 		}
 	}
 
@@ -212,16 +170,14 @@ class facultyController {
 	 * Deletes Faculty By FacultyId
 	 * @param {Request} req => Express Request
 	 * @param {Response} res => Express Response
+	 * @param {NextFunction} next => Express next function
 	 */
-	async deleteFaculty(req: Request, res: Response) {
+	async deleteFaculty(req: Request, res: Response, next: NextFunction) {
 		try {
 			const id = req.params.id;
 			const faculty = await findFacultyById(id);
 			if (!faculty) {
-				return res.status(404).send({
-					success: false,
-					error: { statusCode: 404, message: 'faculty not found' },
-				});
+				throw newError(404, 'Faculty not found!');
 			}
 			await faculty.deleteOne();
 			res.status(200).send({
@@ -233,43 +189,29 @@ class facultyController {
 				},
 			});
 		} catch (error) {
-			res.status(500).send({
-				success: false,
-				error: {
-					statusCode: 500,
-					message: 'Error while deleting faculty',
-				},
-			});
+			next(error);
 		}
 	}
 
 	/**
 	 * Faculty Profile
-	 * @param req => Express Request
+	 * @param {Request}req => Express Request
 	 * @param {Response} res => Express Response
+	 * @param {NextFunction} next => Express next function
 	 */
-	async getProfile(req: Request, res: Response) {
+	async getProfile(req: Request, res: Response, next: NextFunction) {
 		try {
 			const faculty = await findFacultyById(req['loginUser']._id);
 			if (!faculty) {
-				return res.status(404).send({
-					success: false,
-					error: { statusCode: 404, message: 'faculty not found' },
-				});
+				throw newError(404, 'Faculty not found!');
 			}
 
 			res.status(200).send({
 				success: true,
 				data: { statusCode: 200, data: faculty, message: 'Profile' },
 			});
-		} catch {
-			res.status(500).send({
-				success: false,
-				error: {
-					statusCode: 500,
-					message: 'Error while Loading your profile',
-				},
-			});
+		} catch (error) {
+			next(error);
 		}
 	}
 }

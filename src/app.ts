@@ -10,6 +10,7 @@ import applicationRoutes from './application.routes';
 import Config from './config';
 
 import { log } from './utils/winston-logger';
+import { errorHandler } from './middlewares/error-handler';
 
 //For use Environment Variable
 dotenv.config();
@@ -29,6 +30,7 @@ class app {
 		});
 		this.config();
 		this.mongoSetup();
+		this.app.use(errorHandler);
 	}
 
 	//Configure the Express application with middleware, routes, and error handling.

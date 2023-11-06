@@ -1,5 +1,5 @@
 import { findStudentById } from '../Student/student.DAL';
-
+import { newError } from '../../utils/error';
 /**
  *
  * @param attendanceBody => List Of Students with attendance date and status
@@ -27,6 +27,6 @@ export async function fillAttendance(attendanceBody) {
 		});
 		return true;
 	} catch (error) {
-		throw new Error(error);
+		throw newError(500, error);
 	}
 }

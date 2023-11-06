@@ -1,5 +1,5 @@
-import * as mongoose from 'mongoose';
 import Student from './student.model';
+import { newError } from '../../utils/error';
 
 /**
  * Create Student in DB
@@ -10,7 +10,7 @@ export async function createStudent(studentBody: object) {
 	try {
 		return await Student.create(studentBody);
 	} catch (error) {
-		throw new Error(error);
+		throw newError(500, error);
 	}
 }
 
@@ -23,7 +23,7 @@ export async function findStudentByEmailId(emailId) {
 	try {
 		return await Student.findOne({ emailId });
 	} catch (error) {
-		throw new Error(error);
+		throw newError(500, error);
 	}
 }
 
@@ -35,7 +35,7 @@ export async function findStudents() {
 	try {
 		return await Student.find().lean();
 	} catch (error) {
-		throw new Error(error);
+		throw newError(500, error);
 	}
 }
 
@@ -49,7 +49,7 @@ export async function findStudentById(id: string) {
 		// return await Student.findById(new mongoose.Types.ObjectId(id));
 		return await Student.findById(id);
 	} catch (error) {
-		// throw new Error(error);
+		throw newError(500, error);
 	}
 }
 /**
@@ -60,7 +60,7 @@ export async function deleteAll() {
 	try {
 		return await Student.deleteMany({});
 	} catch (error) {
-		throw new Error(error);
+		throw newError(500, error);
 	}
 }
 
@@ -162,7 +162,7 @@ export async function getBatchDepartmentWiseData() {
 
 		return data;
 	} catch (error) {
-		throw new Error(error);
+		throw newError(500, error);
 	}
 }
 
@@ -259,7 +259,7 @@ export async function getAbsentStudentBatchYearSemesterDateWise(requestBody: {
 		const data = await Student.aggregate(pipeline).exec();
 		return data;
 	} catch (error) {
-		throw new Error(error);
+		throw newError(500, error);
 	}
 }
 
@@ -378,7 +378,7 @@ export async function getMoreThen75PercentStudent(requestBody: {
 			.exec();
 		return data;
 	} catch (error) {
-		throw new Error(error);
+		throw newError(500, error);
 	}
 }
 
@@ -528,6 +528,6 @@ export async function getVacancySeat(requestBody) {
 
 		return data;
 	} catch (error) {
-		throw new Error(error);
+		throw newError(500, error);
 	}
 }

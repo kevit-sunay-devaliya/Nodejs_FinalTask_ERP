@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
 import {
 	createDepartment,
 	findDepartments,
 	findDepartmentById,
 } from './department.DAL';
-
+import { newError } from '../../utils/error';
 import { sampleDepartment } from './department.types';
 
 class departmentController {
@@ -14,8 +14,9 @@ class departmentController {
 	 * Creates A New Department
 	 * @param {Request} req => Express Request
 	 * @param {Response} res => Express Response
+	 * @param {NextFunction} next => Express next function
 	 */
-	async createDepartment(req: Request, res: Response) {
+	async createDepartment(req: Request, res: Response, next: NextFunction) {
 		try {
 			const departmentObj: sampleDepartment = req.body;
 			const department = await createDepartment(departmentObj);
@@ -28,13 +29,7 @@ class departmentController {
 				},
 			});
 		} catch (error) {
-			res.status(500).send({
-				success: false,
-				error: {
-					statusCode: 500,
-					message: 'Error while creating new Department',
-				},
-			});
+			next(error);
 		}
 	}
 
@@ -42,8 +37,9 @@ class departmentController {
 	 * List Departments
 	 * @param {Request} req => Express Request
 	 * @param {Response} res => Express Response
+	 * @param {NextFunction} next => Express next function
 	 */
-	async getDepartments(req: Request, res: Response) {
+	async getDepartments(req: Request, res: Response, next: NextFunction) {
 		try {
 			const departments = await findDepartments();
 			res.status(200).send({
@@ -55,30 +51,22 @@ class departmentController {
 				},
 			});
 		} catch (error) {
-			res.status(500).send({
-				success: false,
-				error: {
-					statusCode: 500,
-					message: 'Error while Loading Departments',
-				},
-			});
+			next(error);
 		}
 	}
 
 	/**
 	 * Updates Department By DepartmentId
-	 * @param req => Express Request
+	 * @param {Request}req => Express Request
 	 * @param {Response} res => Express Response
+	 * @param {NextFunction} next => Express next function
 	 */
-	async updateDepartment(req: Request, res: Response) {
+	async updateDepartment(req: Request, res: Response, next: NextFunction) {
 		try {
 			const id = req.params.id;
 			const department = await findDepartmentById(id);
 			if (!department) {
-				return res.status(404).send({
-					success: false,
-					error: { statusCode: 404, message: 'Department not found' },
-				});
+				throw newError(404, 'Department not found!');
 			}
 			for (const field in req.body) {
 				department[field] = req.body[field];
@@ -93,24 +81,22 @@ class departmentController {
 				},
 			});
 		} catch (error) {
-			res.status(500).send({ error: error });
+			next(error);
 		}
 	}
 
 	/**
 	 * Delete Department By DepartmentId
-	 * @param req => Express Request
+	 * @param {Request}req => Express Request
 	 * @param {Response} res => Express Response
+	 * @param {NextFunction} next => Express next function
 	 */
-	async deleteDepartment(req: Request, res: Response) {
+	async deleteDepartment(req: Request, res: Response, next: NextFunction) {
 		try {
 			const id = req.params.id;
 			const department = await findDepartmentById(id);
 			if (!department) {
-				return res.status(404).send({
-					success: false,
-					error: { statusCode: 404, message: 'Department not found' },
-				});
+				throw newError(404, 'Department not found!');
 			}
 			await department.deleteOne();
 			res.status(200).send({
@@ -122,13 +108,7 @@ class departmentController {
 				},
 			});
 		} catch (error) {
-			res.status(500).send({
-				success: false,
-				error: {
-					statusCode: 500,
-					message: 'Error while deleting Users',
-				},
-			});
+			next(error);
 		}
 	}
 }

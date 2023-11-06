@@ -1,6 +1,6 @@
 /xyz
-/coverage
-/Dump
-/node_modules
+coverage/
+Dump/
+node_modules/
 .env
 .hintrc
